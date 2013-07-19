@@ -1,7 +1,5 @@
 /*
- * TODO:
- * Heterodyne the oscialltor signals.
- *
+ *	Inspired by the following articles/code:
  *  http://www.soundstep.com/blog/2012/03/22/javascript-motion-detection/
  *  http://www.adobe.com/devnet/html5/articles/javascript-motion-detection.html
  *  Have the theramin be on only part of the page. Have the (average of ten) left most moving pixel control frequency, (average of ten) top most control volume
