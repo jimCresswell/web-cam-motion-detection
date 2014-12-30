@@ -10,51 +10,16 @@
 
 (function() {
 
-	var helpers = (function helpers(DOCUMENT) {
-		function getElById(id){
-			return DOCUMENT.getElementById(id);
-		}
+	function getElById(id){
+		return document.getElementById(id);
+	}
 
-		function polyfillRequestAnimationFrame() {
-			var lastTime = 0;
-			var vendors = ['ms', 'moz', 'webkit', 'o'];
-			if (!window.requestAnimationFrame) {
-				for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-					window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-					window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
-				}
-			}
-
-			if (!window.requestAnimationFrame) {
-				console.log("Falling back to setTimeout.");
-
-				window.requestAnimationFrame = function(callback, element) {
-					var currTime = new Date().getTime();
-					var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-					var id = window.setTimeout(function() { callback(currTime + timeToCall); },
-					timeToCall);
-					lastTime = currTime + timeToCall;
-					return id;
-				};
-
-				window.cancelAnimationFrame = function(id) {
-					clearTimeout(id);
-				};
-			}
-		}
-
-		return {
-			getElById: getElById,
-			polyfillRequestAnimationFrame: polyfillRequestAnimationFrame
-		};
-	}(window.document));
-
-	var videoEl = helpers.getElById("webcam-input"),
+	var videoEl = getElById("webcam-input"),
 		videoHeight = videoEl.height,
 		videoWidth = videoEl.width,
 
-		canvasSource = helpers.getElById("canvas-source"),
-		canvasBlended = helpers.getElById("canvas-blended"),
+		canvasSource = getElById("canvas-source"),
+		canvasBlended = getElById("canvas-blended"),
 
 		contextSource = canvasSource.getContext('2d'),
 		contextBlended = canvasBlended.getContext('2d'),
@@ -235,8 +200,6 @@
 	contextSource.translate(canvasSource.width, 0);
 	contextSource.scale(-1, 1);
 
-	helpers.polyfillRequestAnimationFrame();
-
 	var getUserMediaName;
 	var gumFnNames = ['getUserMedia', 'mozGetUserMedia', 'webkitGetUserMedia', 'msGetUserMedia']
 	if(!gumFnNames.some(function(fnName) {
@@ -253,5 +216,4 @@
 	navigator[getUserMediaName]({audio: false, video: true}, webcamSuccess, webcamError);
 
 	window.requestAnimationFrame(recursiveCanvasUpdate);
-
 })();
