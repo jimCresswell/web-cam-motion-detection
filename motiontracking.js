@@ -34,6 +34,46 @@
 		bestCounts = [],
 		bestPixelPositions = [];
 
+	/**
+	 * Kick off the JS.
+	 */
+
+	// Invert the camera x-axis
+	contextSource.translate(canvasSource.width, 0);
+	contextSource.scale(-1, 1);
+
+	var getUserMediaName;
+	var gumFnNames = ['getUserMedia', 'mozGetUserMedia', 'webkitGetUserMedia', 'msGetUserMedia']
+	if(!gumFnNames.some(function(fnName) {
+		if (typeof navigator[fnName] === 'function') {
+			getUserMediaName = fnName;
+			return true;
+		}
+		return false;
+	})) {
+		alert('Your browser does not support the "getUSerMedia" API, boo! Try Firefox.');
+		return;
+	}
+
+	navigator[getUserMediaName]({audio: false, video: true}, webcamSuccess, webcamError);
+
+
+	/**
+	 * Functions.
+	 */
+
+
+	function webcamError(error) {
+		console.error("Webcam error:", error);
+	}
+
+	function webcamSuccess(stream) {
+		videoEl.src = window.URL.createObjectURL(stream);
+
+		// Loop away!
+		window.requestAnimationFrame(recursiveCanvasUpdate);
+	}
+
 	function differenceSimple(blendTarget, data1, data2) {
 		var numIterations,
 			iteration,
@@ -176,44 +216,10 @@
 		contextBlended.putImageData(getBlendedVideoData(), 0, 0);
 	}
 
-	function webcamError(error) {
-		console.error("Webcam error:", error);
-	}
-
-	function webcamSuccess(stream) {
-		videoEl.src = window.webkitURL.createObjectURL(stream);
-	}
-
 	function recursiveCanvasUpdate () {
 		drawOriginalVideo();
 		drawBlendedVideo();
 
 		window.requestAnimationFrame(recursiveCanvasUpdate);
 	}
-
-
-	/**
-	 * Kick off the JS.
-	 */
-
-	// Invert the camera x-axis
-	contextSource.translate(canvasSource.width, 0);
-	contextSource.scale(-1, 1);
-
-	var getUserMediaName;
-	var gumFnNames = ['getUserMedia', 'mozGetUserMedia', 'webkitGetUserMedia', 'msGetUserMedia']
-	if(!gumFnNames.some(function(fnName) {
-		if (typeof navigator[fnName] === 'function') {
-			getUserMediaName = fnName;
-			return true;
-		}
-		return false;
-	})) {
-		alert('Your browser does not support the "getUSerMedia" API, boo! Try Firefox.');
-		return;
-	}
-
-	navigator[getUserMediaName]({audio: false, video: true}, webcamSuccess, webcamError);
-
-	window.requestAnimationFrame(recursiveCanvasUpdate);
 })();
