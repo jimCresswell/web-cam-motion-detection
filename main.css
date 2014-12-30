@@ -1,0 +1,30 @@
+body, div, span, a {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  color: grey;
+  font-size: 20pt;
+}
+
+header {
+  padding: 10px 60px;
+}
+
+#webcam-input, #canvas-source {
+  display: none;
+}
+
+.statistics, #videos {
+  display: inline-block;
+  padding-left: 60px;
+}

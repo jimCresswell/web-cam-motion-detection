@@ -1,7 +1,3 @@
-# Project specific #
-###################
-
-
 # Compiled source #
 ###################
 *.com
@@ -37,6 +33,14 @@
 ._*
 .Spotlight-V100
 .Trashes
-Icon?
+#Icon?
 ehthumbs.db
 Thumbs.db
+
+#Vim
+*.swp
+
+#Dependencies
+node_modules/
+bower_components/
+
