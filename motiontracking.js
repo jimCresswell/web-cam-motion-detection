@@ -237,7 +237,20 @@
 
 	helpers.polyfillRequestAnimationFrame();
 
-	navigator.webkitGetUserMedia({audio: false, video: true}, webcamSuccess, webcamError);
+	var getUserMediaName;
+	var gumFnNames = ['getUserMedia', 'mozGetUserMedia', 'webkitGetUserMedia', 'msGetUserMedia']
+	if(!gumFnNames.some(function(fnName) {
+		if (typeof navigator[fnName] === 'function') {
+			getUserMediaName = fnName;
+			return true;
+		}
+		return false;
+	})) {
+		alert('Your browser does not support the "getUSerMedia" API, boo! Try Firefox.');
+		return;
+	}
+
+	navigator[getUserMediaName]({audio: false, video: true}, webcamSuccess, webcamError);
 
 	window.requestAnimationFrame(recursiveCanvasUpdate);
 
