@@ -15,3 +15,5 @@ Alternatively if you have Node and npm or a compatible runtime  available on you
 
 * `npm install`
 * `gulp`
+
+Note: if you are developing in Firefox there appears to be a race condition between the getUserMedia permissions modal dialogue and the browser-sync server, so either use Chrome, use a different server, or hack a delay into the success callback.
